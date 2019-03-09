@@ -4,7 +4,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.scoreManager = new ScoreManager;
   this.actuator     = new Actuator;
 
-  this.startTiles   = 2;
+  this.startTiles   = 15;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -54,7 +54,7 @@ GameManager.prototype.addStartTiles = function () {
   var tile, types = ['number', 'operator'];
   for (var i = 0; i < this.startTiles; i++) {
     if (this.grid.cellsAvailable()) {
-      tile = new Tile(this.grid.randomAvailableCell(), 2, types[i % types.length]);
+      tile = new Tile(this.grid.randomAvailableCell(), 1, types[i % types.length]);
       this.grid.insertTile(tile);
     }
   }
@@ -63,8 +63,8 @@ GameManager.prototype.addStartTiles = function () {
 // Adds a tile in a random position
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
-    var type = Math.random() < 0.8 ? 'number' : 'operator';
-    var value = Math.random() < (type === 'number' ? 0.9 : 0.8) ? 2 : 4;
+    var type = Math.random() < 0.9 ? 'number' : 'operator';
+    var value = Math.random() < (type === 'number' ? 0.9 : 0.8) ? 1 : 2;
     var tile = new Tile(this.grid.randomAvailableCell(), value, type);
 
     this.grid.insertTile(tile);
@@ -139,7 +139,7 @@ GameManager.prototype.move = function (direction) {
               type = 'operator';
             }
           } else {
-            value = tile.value * 2;
+            value = tile.value + 1;
           }
           var merged = new Tile(positions.next, value, type);
           merged.mergedFrom = [tile, next];
@@ -154,7 +154,7 @@ GameManager.prototype.move = function (direction) {
           self.score += merged.value;
 
           // The mighty 2048 tile
-          if (merged.value >= 32768 && merged.type === 'number') self.won = true;
+          if (merged.value >= 5 && merged.type === 'number') self.won = true;
         } else {
           self.moveTile(tile, positions.farthest);
         }
