@@ -4,7 +4,7 @@ function HTMLActuator() {
   this.bestContainer    = document.querySelector(".best-container");
   this.messageContainer = document.querySelector(".game-message");
 
-  this.score = 0;
+  this.score = 7;
 }
 
 HTMLActuator.prototype.actuate = function (grid, metadata) {
@@ -61,8 +61,8 @@ HTMLActuator.prototype.addTile = function (tile) {
   var classes = ["tile", "tile-" + tile.value, positionClass];
   var value = tile.value;
 
-  if (value > 2048) classes.push("tile-super");
-  if (value > 32768) {
+  if (value > 5) classes.push("tile-super");
+  if (value > 5) {
     (function() {
       var i = 1, n = value;
       while (n > 2) {
